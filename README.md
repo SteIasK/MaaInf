@@ -41,16 +41,6 @@
 
 通过 Unity 窗口类名绑定游戏窗口 → Windows.Graphics.Capture 截屏 → 模板匹配 / OCR / 自定义识别判定当前界面状态 → 自定义 SendInput 动作完成点击；判定为音游相关状态时只轮询不操作。分辨率自适应采用短边归一化，内容区恒定映射为 1280×720，模板与 ROI 全分辨率通用。
 
-## 开发
-
-```bash
-pip install -r requirements.txt
-python -u runner.py          # 控制台运行
-python gui_shell.py          # 图形界面（开发模式）
-```
-
-界面壳 `gui_shell.py` 与运行逻辑 `runner.py` 分离：壳进程不加载 maa 原生库（规避 PyInstaller 打包冲突），以子进程方式拉起运行器并回显日志。开发文档见 [docs/zh_cn/develop](./docs/zh_cn/develop/)。
-
 ## 免责声明
 
 本项目为个人效率辅助工具，仅供学习交流使用，与游戏官方及发行方无关。请在遵守游戏用户协议的前提下自行评估使用风险；因使用本项目产生的一切后果由使用者自行承担。
