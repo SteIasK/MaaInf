@@ -21,7 +21,7 @@
 ## 使用方法
 
 1. 从 [Releases](../../releases) 下载便携包 zip，解压到任意目录
-2. 启动 Steam 版 In Falsus，停在任意界面
+2. 启动 Steam 版 In Falsus，停在剧情树界面
 3. 双击 **MaaInf.exe**，点击【启动】或按 **F9**
 4. 需要终止时按 **F10** 或点击【停止】，随时可再次启动
 
