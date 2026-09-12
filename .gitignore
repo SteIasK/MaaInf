@@ -458,3 +458,5 @@ dist/
 gui_stderr.log
 gui_test.log
 pw_err.log
+# 模板标定原始素材: 运行只需 assets/ 内的裁片, 完整游戏截图不入库
+screenshots/

@@ -1,43 +1,61 @@
-<!-- markdownlint-disable MD033 MD041 -->
-<p align="center">
-  <img alt="LOGO" src="https://cdn.jsdelivr.net/gh/MaaAssistantArknights/design@main/v1/icons/maa-logo_512x512.png" width="256" height="256" />
-</p>
-
 <div align="center">
 
-# MaaPracticeBoilerplate
+# MaaInf
+
+**In Falsus 剧情跳过自动化助手 · 基于 [MaaFramework](https://github.com/MaaXYZ/MaaFramework)**
+
+剧情段自动推进 · 音游段完全静默 · 解压即用
 
 </div>
 
-本仓库为 [MaaFramework](https://github.com/MaaXYZ/MaaFramework) 所提供的项目模板，开发者可基于此模板直接创建自己的 MaaXXX 项目。
+---
 
-> **MaaFramework** 是基于图像识别技术、运用 [MAA](https://github.com/MaaAssistantArknights/MaaAssistantArknights) 开发经验去芜存菁、完全重写的新一代自动化黑盒测试框架。
-> 低代码的同时仍拥有高扩展性，旨在打造一款丰富、领先、且实用的开源库，助力开发者轻松编写出更好的黑盒测试程序，并推广普及。
+## 功能特性
 
-## 即刻开始
+- **剧情段全自动**：对话推进、快进加速、剧情树选读最新章节，全程无需操作
+- **音游段零干扰**：卡牌装配、演奏、结算等阶段只识别、不注入任何输入，把操作完整交还给玩家
+- **多分辨率自适应**：16:9 / 16:10 任意分辨率与窗口模式，画面内容区自动归一化识别
+- **图形界面**：启动/停止按钮、全局热键、实时日志面板
+- **无缝接管**：音游结算后直接进入的剧情段也能立即识别并继续跳过
 
-**请不要直接克隆本仓库！你应该通过模板创建自己的项目！**  
+## 使用方法
 
-请阅读 [如何开发](./docs/zh_cn/develop/how_to_develop.md)。
+1. 从 [Releases](../../releases) 下载便携包 zip，解压到任意目录
+2. 启动 Steam 版 In Falsus，停在任意界面
+3. 双击 **MaaInf.exe**，点击【启动】或按 **F9**
+4. 需要终止时按 **F10** 或点击【停止】，随时可再次启动
 
-向本模板仓库提交改动前，请阅读 [PR 规范](./docs/zh_cn/develop/pull_request_guidelines.md)。
+| 热键 | 功能 |
+| --- | --- |
+| F9 | 启动（全局生效，游戏内可按） |
+| F10 | 停止（全局生效） |
 
-## 生态共建
+### 注意事项
 
-MAA 正计划建设为一类项目，而非舟的单一软件。
+- 首次运行 Windows SmartScreen 会拦截一次（exe 未做数字签名），点「更多信息 → 仍要运行」；个别杀毒软件可能误报，加入白名单即可
+- `MaaInf.exe` 必须与压缩包内其他文件（`python\`、`assets\`、`runner.py`）保持同目录，不要单独拷贝 exe
+- 目前按**游戏中文界面**标定识别关键词；HDR 显示器建议关闭后再使用
+- 建议使用窗口或无边框全屏模式运行游戏
 
-若您的项目依赖于 MaaFramework，我们欢迎您将它命名为 MaaXXX, MXA, MAX 等等。当然，这是许可而不是限制，您也可以自由选择其他与 MAA 无关的名字，完全取决于您自己的想法！
+## 工作原理
 
-同时，我们也非常欢迎您提出 PR，在 [社区项目列表](https://github.com/MaaXYZ/MaaFramework#%E7%A4%BE%E5%8C%BA%E9%A1%B9%E7%9B%AE) 中添加上您的项目！
+通过 Unity 窗口类名绑定游戏窗口 → Windows.Graphics.Capture 截屏 → 模板匹配 / OCR / 自定义识别判定当前界面状态 → 自定义 SendInput 动作完成点击；判定为音游相关状态时只轮询不操作。分辨率自适应采用短边归一化，内容区恒定映射为 1280×720，模板与 ROI 全分辨率通用。
 
-## 常见问题
+## 开发
 
-请阅读 [常见问题](./docs/zh_cn/develop/faq.md)。
+```bash
+pip install -r requirements.txt
+python -u runner.py          # 控制台运行
+python gui_shell.py          # 图形界面（开发模式）
+```
+
+界面壳 `gui_shell.py` 与运行逻辑 `runner.py` 分离：壳进程不加载 maa 原生库（规避 PyInstaller 打包冲突），以子进程方式拉起运行器并回显日志。开发文档见 [docs/zh_cn/develop](./docs/zh_cn/develop/)。
+
+## 免责声明
+
+本项目为个人效率辅助工具，仅供学习交流使用，与游戏官方及发行方无关。请在遵守游戏用户协议的前提下自行评估使用风险；因使用本项目产生的一切后果由使用者自行承担。
 
 ## 鸣谢
 
-本项目由 **[MaaFramework](https://github.com/MaaXYZ/MaaFramework)** 强力驱动！
-
-感谢以下开发者对本项目作出的贡献（下面链接改成你自己的项目地址）:
-
-[![Contributors](https://contrib.rocks/image?repo=MaaXYZ/MaaFramework&max=1000)](https://github.com/MaaXYZ/MaaFramework/graphs/contributors)
+- [MaaFramework](https://github.com/MaaXYZ/MaaFramework) — 图像识别自动化框架
+- [MaaPracticeBoilerplate](https://github.com/MaaXYZ/MaaPracticeBoilerplate) — 项目模板

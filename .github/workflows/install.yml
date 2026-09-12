@@ -8,22 +8,9 @@ env:
   MFAA_VERSION: ""
 
 on:
-  push:
-    tags:
-      - "v*"
-    branches:
-      - "**"
-    paths:
-      - ".github/workflows/install.yml"
-      - "assets/**"
-      - "**.py"
-  pull_request:
-    branches:
-      - "**"
-    paths:
-      - ".github/workflows/install.yml"
-      - "assets/**"
-      - "**.py"
+  # 本项目发布方式: 手动将便携包 zip 上传到 GitHub Release。
+  # 模板 CI 打的包不含 python 运行时与 GUI exe, 为避免 v* tag 自动发布不完整产物,
+  # 已屏蔽 tag/分支自动触发, 仅保留手动运行入口。
   workflow_dispatch:
 
 jobs:
