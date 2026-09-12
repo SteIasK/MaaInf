@@ -451,4 +451,10 @@ install
 tools/ImageCropper/**/*.png
 
 config
-debug
+debugscreenshots/
+
+# 本项目本地产物
+dist/
+gui_stderr.log
+gui_test.log
+pw_err.log

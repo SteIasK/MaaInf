@@ -1,109 +1,60 @@
 {
     // 本文件主要定义了通用 UI 的行为和显示内容
-    // 可参考文档和示例添加更多您需要的功能
     // 文档：https://maafw.xyz/docs/3.3-ProjectInterfaceV2
-    // 示例：https://github.com/MaaXYZ/MaaFramework/blob/main/sample/interface.json
     "interface_version": 2,
-    "name": "MaaXXX",
-    "description": "这是一个使用 MaaFramework 创建的新项目。",
-    "contact": "QQ群: 123456789",
+    "name": "MaaInf",
+    "description": "In Falsus 剧情跳过辅助（黑盒图像识别，不触碰音游演奏）",
+    "contact": "",
     "license": "MIT",
-    "welcome": "首次使用！欢迎使用 MAA!",
+    "welcome": "使用前请确认：游戏显示模式为「全屏(无边框)」或「窗口」，且游戏窗口没有被最小化。",
     // 填写项目地址和版本号可实现自动更新功能
-    "github": "https://github.com/MaaXYZ/MaaPracticeBoilerplate",
-    "version": "1.0.0",
-    // Mirror酱为第三方分发服务，新项目默认关闭
-    // 若有需要请联系 Mirror酱 开通，直接自行开启是无法使用的
-    // "mirrorchyan_rid": "MaaXXX",
-    // "mirrorchyan_multiplatform": true,
+    // "github": "https://github.com/<你的用户名>/MaaInf",
+    "version": "0.1.0",
     "controller": [
-        {
-            "name": "安卓端",
-            "type": "Adb",
-            "display_short_side": 720 // 默认缩放分辨率的短边长度
-        },
         {
             "name": "桌面端",
             "type": "Win32",
+            // 运行时截图统一缩放到短边800（即 2560x1600 -> 1280x800），
+            // pipeline 里的所有坐标/roi 都基于 1280x800 坐标系，模板图也是按此缩放裁剪的
+            "display_short_side": 800,
             "win32": {
-                "class_regex": ".*",
-                "window_regex": "Visual Studio",
-                // 截图及控制方式，请根据项目实际情况修改
-                // 文档: https://maafw.xyz/docs/2.4-ControlMethods
-                "screencap": "PrintWindow", // 截图方式
-                "mouse": "PostMessageWithCursorPos", // 鼠标控制方式
-                "keyboard": "PostMessageWithCursorPos" // 键盘控制方式
+                // Unity 窗口类名固定为 UnityWndClass；window_regex 放宽以便在窗口列表中人工选择
+                "class_regex": "UnityWndClass",
+                "window_regex": ".*",
+                // 截图及控制方式文档: https://maafw.xyz/docs/2.4-ControlMethods
+                // FramePool = Windows.Graphics.Capture，无边框全屏首选；若截到黑屏依次尝试 "DXGI_DesktopDup"、"GDI"
+                "screencap": "FramePool",
+                // Seize = 真实鼠标键盘注入（前台操作，Unity 兼容性最好）；挂机期间请不要动鼠标
+                "mouse": "Seize",
+                "keyboard": "Seize"
             }
         }
     ],
     "resource": [
         {
-            "name": "官服",
+            "name": "正式版",
             "path": [
                 "./resource"
-            ]
-        },
-        {
-            "name": "B 服",
-            "path": [
-                "./resource"
-                // "./resource_bilibili"
             ]
         }
     ],
-    // 可选的 agent 示例
-    // "agent": {
-    //     "child_exec": "python",
-    //     "child_args": [
-    //         "./agent/main.py"
-    //     ]
-    // },
+    // agent 子进程: 注册 win_click / ff_active_reco (通用 GUI 分发模式必需)。
+    // 本机开发用 runner.py 时不经过这里; 打包分发时由 CI 把嵌入式 Python
+    // 放到包内 ./python/, 并将 child_exec 改为 "./python/python.exe"
+    "agent": {
+        "child_exec": "python",
+        "child_args": [
+            "./agent/main.py"
+        ]
+    },
     "task": [
         {
-            "name": "普通任务",
-            "entry": "MyTask1"
+            "name": "连接测试",
+            "entry": "调试_连接测试"
         },
         {
-            "name": "选项任务",
-            "entry": "MyTask2",
-            "option": [
-                "任务选项1"
-            ]
-        },
-        {
-            "name": "参数任务",
-            "entry": "MyTask3",
-            "option": [
-                "任务选项1"
-            ],
-            "pipeline_override": {}
-        },
-        {
-            "name": "自定义识别与动作示例",
-            "entry": "FindSmallestNumber"
+            "name": "剧情跳过",
+            "entry": "剧情_主循环"
         }
-    ],
-    "option": {
-        "任务选项1": {
-            "type": "select",
-            "cases": [
-                {
-                    "name": "文本1",
-                    "pipeline_override": {
-                        "OcrTask": {
-                            "text": "文本1"
-                        }
-                    }
-                },
-                {
-                    "name": "文本2",
-                    "pipeline_override": {
-                        "OcrTask": {
-                            "text": "文本2"
-                        }
-                    }
-                }
-            ]
-        }
-    }
+    ]
 }

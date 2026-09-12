@@ -1,0 +1,240 @@
+{
+    "调试_连接测试": {
+        "recognition": "DirectHit",
+        "action": "DoNothing"
+    },
+    "调试_停止": {
+        "recognition": "DirectHit",
+        "action": "StopTask"
+    },
+    "剧情_主循环": {
+        "recognition": "DirectHit",
+        "action": "DoNothing",
+        "rate_limit": 400,
+        "timeout": 120000,
+        "next": [
+            "音游_结算点击",
+            "音游_静默等待",
+            "剧情_快进确认OK",
+            "剧情_快进按钮",
+            "剧情树_开始",
+            "剧情树_最新未读",
+            "剧情_对话推进",
+            "剧情_过渡点击"
+        ],
+        "on_error": [
+            "调试_停止"
+        ]
+    },
+    "音游_结算点击": {
+        "recognition": "OCR",
+        "expected": [
+            "已获取",
+            "已解锁"
+        ],
+        "roi": [
+            400,
+            120,
+            480,
+            160
+        ],
+        "action": "Custom",
+        "custom_action": "win_click",
+        "custom_action_param": {
+            "screen_center": true
+        },
+        "timeout": 8000,
+        "next": [
+            "剧情_主循环"
+        ],
+        "on_error": [
+            "剧情_主循环"
+        ]
+    },
+    "音游_静默等待": {
+        "recognition": "Or",
+        "any_of": [
+            "音游_静默_配置页",
+            "音游_静默_卡牌页",
+            "音游_静默_演奏中",
+            "音游_静默_结算页"
+        ],
+        "action": "DoNothing",
+        "rate_limit": 2000,
+        "timeout": 1800000,
+        "next": [
+            "音游_结算点击",
+            "剧情树_最新未读",
+            "剧情_对话推进"
+        ],
+        "on_error": [
+            "调试_停止"
+        ]
+    },
+    "音游_静默_配置页": {
+        "recognition": "OCR",
+        "expected": [
+            "装备配置",
+            "放弃"
+        ],
+        "roi": [
+            0,
+            650,
+            1280,
+            150
+        ]
+    },
+    "音游_静默_卡牌页": {
+        "recognition": "OCR",
+        "expected": [
+            "CONNECT",
+            "REFLECT",
+            "选择卡牌配置"
+        ],
+        "roi": [
+            0,
+            0,
+            1280,
+            200
+        ]
+    },
+    "音游_静默_演奏中": {
+        "recognition": "TemplateMatch",
+        "template": "story/gameplay_score.png",
+        "threshold": 0.7,
+        "roi": [
+            0,
+            40,
+            160,
+            80
+        ]
+    },
+    "音游_静默_结算页": {
+        "recognition": "OCR",
+        "expected": [
+            "DIVE CLEARED",
+            "DIVE RESULT"
+        ],
+        "roi": [
+            0,
+            0,
+            1280,
+            500
+        ]
+    },
+    "剧情_快进确认OK": {
+        "recognition": "TemplateMatch",
+        "template": "story/ok_btn.png",
+        "threshold": 0.7,
+        "roi": [
+            600,
+            460,
+            340,
+            110
+        ],
+        "action": "Custom",
+        "custom_action": "win_click",
+        "timeout": 5000,
+        "next": [
+            "剧情_主循环"
+        ],
+        "on_error": [
+            "剧情_主循环"
+        ]
+    },
+    "剧情_快进按钮": {
+        "recognition": "Custom",
+        "custom_recognition": "ff_active_reco",
+        "roi": [
+            1150,
+            73,
+            32,
+            26
+        ],
+        "action": "Custom",
+        "custom_action": "win_click",
+        "custom_action_param": {
+            "then_center": true
+        },
+        "timeout": 5000,
+        "next": [
+            "剧情_主循环"
+        ],
+        "on_error": [
+            "剧情_主循环"
+        ]
+    },
+    "剧情树_最新未读": {
+        "recognition": "OCR",
+        "expected": [
+            "最新未读"
+        ],
+        "roi": [
+            1080,
+            35,
+            200,
+            60
+        ],
+        "action": "Custom",
+        "custom_action": "win_click",
+        "timeout": 5000,
+        "next": [
+            "剧情_主循环"
+        ],
+        "on_error": [
+            "剧情_主循环"
+        ]
+    },
+    "剧情树_开始": {
+        "recognition": "TemplateMatch",
+        "template": "story/start_btn.png",
+        "threshold": 0.7,
+        "action": "Custom",
+        "custom_action": "win_click",
+        "timeout": 8000,
+        "next": [
+            "剧情_主循环"
+        ],
+        "on_error": [
+            "剧情_主循环"
+        ]
+    },
+    "剧情_对话推进": {
+        "recognition": "TemplateMatch",
+        "template": "story/dialog_anchor.png",
+        "threshold": 0.7,
+        "roi": [
+            1180,
+            50,
+            100,
+            80
+        ],
+        "action": "Custom",
+        "custom_action": "win_click",
+        "custom_action_param": {
+            "screen_center": true
+        },
+        "timeout": 5000,
+        "next": [
+            "剧情_主循环"
+        ],
+        "on_error": [
+            "剧情_主循环"
+        ]
+    },
+    "剧情_过渡点击": {
+        "recognition": "DirectHit",
+        "action": "Custom",
+        "custom_action": "win_click",
+        "custom_action_param": {
+            "screen_center": true
+        },
+        "rate_limit": 800,
+        "next": [
+            "剧情_主循环"
+        ],
+        "on_error": [
+            "剧情_主循环"
+        ]
+    }
+}
